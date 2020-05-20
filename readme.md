@@ -47,11 +47,11 @@ COPYCONFIGRC-FORMAT-------------------------------------
 ___________________________________
 File Name   Configuration Directory
 
-.zshrc      \$HOME/.config/zsh
+.zshrc      $HOME/.config/zsh
  ...          ...
 ___________________________________
 
-Be sure to specify enviromental variables (\$ZDOTDIR, for
+Be sure to specify enviromental variables ($ZDOTDIR, for
 example) in ~/.bashrc or with any other similar method:
 
 >> vim ~/env
