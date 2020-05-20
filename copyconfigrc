@@ -1,0 +1,10 @@
+# File Name   Configuration Directory
+
+
+bash_aliases     $HOME
+.zshrc           $HOME/.config/zsh                        
+vimrc            $HOME/.vim
+
+#
+# <-- this is a comment
+#
