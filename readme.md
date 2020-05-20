@@ -13,7 +13,7 @@ Github integration will be added later to allow you to automatically pull dotfil
 
 `chmod u+x copyconfig.sh` 
 
-## Example Useage:
+## Example Usage:
 
         >> sh copyconfig.sh -d ~/Dotfiles
         
