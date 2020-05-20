@@ -7,9 +7,11 @@ Github integration will be added later to allow you to automatically pull dotfil
 
 ## Installation and Setup:
 
-`chmod u+x copyconfig.sh` 
+`git clone https://github.com/dennisfarmer/copyconfig.git`
 
-`sh copyconfig.sh`
+`cd copyconfig`
+
+`chmod u+x copyconfig.sh` 
 
 ## Example Useage:
 
