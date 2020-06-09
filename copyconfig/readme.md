@@ -1,5 +1,8 @@
 # CopyConfig
-This shell script is a sorta hacky way to automatically update system configuration files from a central folder without having to keep track of where they are all located on your system. 
+
+[![LICENSE](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/dennisfarmer/scripts/master/LICENSE)
+
+This script is a sorta hacky way to automatically update system configuration files from a central folder without having to keep track of where they are all located on your system. 
 
 Using a file called `copyconfigrc`, you can specify each of your files along with the directory you want them to be placed in.
 
@@ -9,9 +12,7 @@ Github integration will be added later to allow you to automatically pull dotfil
 
 `git clone https://github.com/dennisfarmer/copyconfig.git`
 
-`cd copyconfig`
-
-`chmod u+x copyconfig.sh` 
+`chmod u+x copyconfig/copyconfig.sh` 
 
 ## Example Usage:
 
