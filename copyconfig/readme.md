@@ -4,25 +4,33 @@
 
 This script is a sorta hacky way to automatically update system configuration files from a central folder without having to keep track of where they are all located on your system. 
 
-Using a file called `copyconfigrc`, you can specify each of your files along with the directory you want them to be placed in.
+Using a file called `copyconfig.json`, you can specify each of your files along with the directory you want them to be placed in.
 
 Github integration will be added later to allow you to automatically pull dotfiles from a repository.
 
-## Installation and Setup:
+### Requirements:
+`git, jq`
 
-`git clone https://github.com/dennisfarmer/copyconfig.git`
+### Installation:
 
-`chmod u+x copyconfig/copyconfig.sh` 
+```zsh
+git clone https://github.com/dennisfarmer/copyconfig.git
 
-## Example Usage:
+chmod u+x copyconfig/copyconfig.sh
+```
 
-        >> sh copyconfig.sh -d ~/Dotfiles
-        
-        bash_aliases --> /home/dennisfarmer/bash_aliases
-        .zshrc --> /home/dennisfarmer/.config/zsh/.zshrc
-        vimrc --> /home/dennisfarmer/.vim/vimrc
+### Example Usage:
 
-## Manual Guide:
+```zsh
+>> ./copyconfig.sh -d ~/Dotfiles
+ 
+"tmuxrc" --> /home/dennisfarmer/.config/tmux/tmuxrc
+"vimrc" --> /home/dennisfarmer/.vim/vimrc
+"zshenv" --> /home/dennisfarmer/.config/zsh/.zshenv
+"zshrc" --> /home/dennisfarmer/.config/zsh/.zshrc
+```
+
+### Manual Guide:
 
 <hr>
 
@@ -30,13 +38,13 @@ Github integration will be added later to allow you to automatically pull dotfil
 Usage:
   copyconfig [-c FILE] [-d DIRECTORY] [-r]
 
-Copies Unix configuration files as specified by copyconfigrc
+Copies Unix configuration files as specified by copyconfig.json
 
 ARGUMENTS-----------------------------------------------
   -h, --help               Display this message
                           
   -c, --config <file>      Change path to copyconfigrc
-                           (default='./copyconfigrc')
+                           (default='./copyconfig.json')
 
   -d, --dotfile <folder>   Specify directory that dotfiles
                            are contained in (default='.')
@@ -44,13 +52,15 @@ ARGUMENTS-----------------------------------------------
   -r, --remove             Optional flag that removes
                            previously copied dotfiles
 
-COPYCONFIGRC-FORMAT-------------------------------------
-___________________________________
-File Name   Configuration Directory
+COPYCONFIG.JSON-FORMAT----------------------------------
+_____________________________________
+"FileName" : "Directory/FileName"
 
-.zshrc      $HOME/.config/zsh
+{
+"zshrc" : "$HOME/.config/zsh/.zshrc",
  ...          ...
-___________________________________
+}
+_____________________________________
 
 Be sure to specify enviromental variables ($ZDOTDIR, for
 example) in ~/.bashrc or with any other similar method:
