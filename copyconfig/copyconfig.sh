@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 
-config_dir="."
+config_dir="./copyconfig.json"
 remove=""
 dotfile_dir="."
+installing=""
 
 while test $# -gt 0; do
            case "$1" in
                 -h|--help)
-                     cat "./readme.md" 2>/dev/null | tail -n36 | head -n35 || {
                      echo "Usage:"
-                     echo "  copyconfig [-c FILE] [-d DIRECTORY] [-r]"
+                     echo "  copyconfig [-c FILE] [-d DIRECTORY] [-r -i]"
                      echo ""
-                     echo "Copies Unix configuration files as specified by copyconfig.json"
+                     echo "Backs up Unix configuration files as specified by copyconfig.json"
                      echo ""
                      echo "ARGUMENTS-----------------------------------------------"
                      echo "  -h, --help               Display this message"
-                     echo "                          "
-                     echo "  -c, --config <file>      Change path to copyconfigrc"
+                     echo ""
+                     echo "  -c, --config <file>      Change path to config file"
                      echo "                           (default='./copyconfig.json')"
                      echo ""
                      echo "  -d, --dotfile <folder>   Specify directory that dotfiles"
@@ -24,6 +24,11 @@ while test $# -gt 0; do
                      echo ""
                      echo "  -r, --remove             Optional flag that removes"
                      echo "                           previously copied dotfiles"
+                     echo ""
+                     echo "  -i, --install            Instead of copying from the"
+                     echo "                           system to dotfile directory,"
+                     echo "                           copy contents of dotfile directory"
+                     echo "                           to respective system folders"
                      echo ""
                      echo "COPYCONFIG.JSON-FORMAT----------------------------------"
                      echo "_____________________________________"
@@ -43,7 +48,6 @@ while test $# -gt 0; do
                      echo ""
                      echo ">> source ~/env"
                      echo ""
-                     }
                      exit 0
                      ;;
                  -c|--config)
@@ -58,8 +62,23 @@ while test $# -gt 0; do
                      ;;
                  -r|--remove)
                      shift
+	             read -p "Are you sure you wish to REMOVE files from system directories? [y|n] " -n 1 -r
+                     if [[ $REPLY =~ ^[Yy]$ ]]
+	             then
+	             echo "";echo ""
                      remove="TRUE"
+		     fi
                      ;;
+                 -i|--install)
+		     shift
+	             echo "Are you sure you wish to INSTALL files to system directories?"
+	             read -p "This will OVERWRITE existing configuration files! [y|n] " -n 1 -r
+                     if [[ $REPLY =~ ^[Yy]$ ]]
+	             then
+	             echo ""; echo ""
+		     installing="TRUE"
+		     fi
+		     ;;
                  *)
                     echo "copyconfig: invalid option -- '$1'"
                     echo "Try 'copyconfig --help' for more information"
@@ -68,16 +87,45 @@ while test $# -gt 0; do
            esac
    done  
 		      
-for key in $(jq 'keys | .[]' copyconfig.json); do
-    filepath=$(eval "echo $(jq .$key copyconfig.json)") 
+for key in $(jq 'keys | .[]' $config_dir); do
+    filepath=$(eval "echo $(jq .$key $config_dir)") 
+    
+    global_var=$(echo $filepath | sed "s|^\(\$[^\/]*\).*$|\1|")
+    converted_var=$(eval "echo $global_var")
+    filepath=$(echo $filepath | sed "s|\(\$[^\/]*\)|$converted_var|") 
+    
+    key=$(echo $key | sed "s/\"//g")
     
     if [ $remove ]
     then
-	#rm -f "$filepath"
-	echo "REMOVE --> $filepath"
+	rm -rf "$filepath" && {
+	echo "Removed: $filepath"
+        }
     else
-	#[[ ! -d $key ]] $$ mkdir -p $key
-	#cp -l "$dotfile_dir/$key" "$filepath"
-	echo "$key --> $filepath"
+	if [ $installing ]
+	then
+	    file_dir=$(echo $filepath | rev | cut -d/ -f2- | rev) 
+	    [[ ! -d $file_dir ]] && mkdir -p $file_dir
+             
+	    cp -r "$dotfile_dir/$key" $filepath && {
+		    echo "Installed: $key"
+		    echo "       to: $filepath"
+            }
+	else
+	    if [ -d "$filepath" ]
+	    then
+		[[ ! -d "$dotfile_dir/$key" ]] && mkdir -p "$dotfile_dir/$key"
+	        cp -r $filepath/* $dotfile_dir/$key && {
+			echo "Backed up: $filepath"
+			echo "       to: $dotfile_dir/$key"
+	        }
+	    else 
+		cp -r "$filepath" "$dotfile_dir/$key" && {
+			echo "Backed up: $filepath"
+			echo "       to: $dotfile_dir/$key"
+                }
+	    fi
+
+	fi
     fi
-done
+done; exit 0

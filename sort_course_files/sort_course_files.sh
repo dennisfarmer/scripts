@@ -1,30 +1,37 @@
 #!/usr/bin/env bash
 
 powerpoint_regex="LarCalcETF7e_\([0-9]\{2\}\)_[0-9]\{2\}\.pptx"
-mp4_regex="\([0-9]\{1,2\}\)_[0-9]\{1,2\}.*\.mp4"
+mp4_regex="\([0-9]\{1,2\}\)_[0-9]\{1,2\}_etf_.*\.mp4"
 
-function find_dir () {
+# make dirs:
+while read line; do
+	line_number=$(printf "%02d" $(echo $line | sed "s/[^[0-9]]*//g"))
+	line=$(echo $line | sed "s/[0-9]*/$line_number/; s/\://g; s/\s/_/g; s/\,//g" | tr [:upper:] [:lower:]) 
+	mkdir $line 2>/dev/null && echo "Creating: \"$line\"..."
+done <$1
+
+function findDir () {
+	# Find directory name that contains given string
+	# $1 = pattern_to_match 
+
 	for directory in ./*/; do
 		if [[ ${directory#./} =~ $1 ]]; then
+			# remove trailing "/" character
 			echo $directory | rev | cut -f2- -d/ | rev
 			break
 		fi
 	done	
 }
 
-while read p; do
-	line_number=$(printf "%02d" $(echo $p | sed "s/[^[0-9]]*//g"))
-	p=$(echo $p | sed "s/[0-9]*/$line_number/; s/\://g; s/\s/_/g; s/\,//g" | tr [:upper:] [:lower:]) 
-	mkdir $p 2>/dev/null && echo "Creating: \"$p\"..."
-done <$1
+function moveFiles () {
+	# $1 = file_extention (.pptx, .mp4, ...)
+	# $2 = reg_expr (to parse filename for unit number)
 
-for powerpoint in ./*.pptx; do
-	unit_number=$(echo  ${powerpoint#./} | sed "s/$powerpoint_regex/\1/")
-	mv $powerpoint $(find_dir $unit_number)*
-done
-
-for mp4file in ./*.mp4; do
-	unit_number=$(printf "%02d" $(echo ${mp4file#./} | sed "s/$mp4_regex/\1/"))
-	mv $mp4file $(find_dir $unit_number)*
-
-done
+	for file in ./*$1; do
+		unit_number=$(printf "%02d" $(echo ${file#./} | sed "s/$2/\1/"))
+		mv $file $(findDir $unit_number)*
+	done
+}
+ 
+moveFiles ".pptx" $powerpoint_regex
+moveFiles ".mp4" $mp4_regex

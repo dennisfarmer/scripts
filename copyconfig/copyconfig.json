@@ -1,6 +1,7 @@
 {
-"zshrc":"$HOME/.config/zsh/.zshrc",
-"zshenv":"$HOME/.config/zsh/.zshenv",
-"vimrc":"$HOME/.vim/vimrc",
-"tmuxrc":"$HOME/.config/tmux/tmuxrc"
+"zshrc": "$HOME/.config/zsh/.zshrc",
+
+"filenamesrc": "source/names/can/have/different/names/from/destination/files/file_namez.json",
+"glo_var.txt": "/You*can*use*$GLOBALVARIABLES*in*directory*names/glo_var.txt",
+"spaces.txt": "/escape*spaces*with*asterisks/spaces.txt"
 }

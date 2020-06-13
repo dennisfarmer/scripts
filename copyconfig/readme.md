@@ -15,19 +15,21 @@ Github integration will be added later to allow you to automatically pull dotfil
 
 ```zsh
 git clone https://github.com/dennisfarmer/copyconfig.git
-
-chmod u+x copyconfig/copyconfig.sh
+cp copyconfig/copyconfig.sh $HOME/bin/copyconfig
+chmod u+x $HOME/bin/copyconfig
 ```
 
 ### Example Usage:
 
 ```zsh
->> ./copyconfig.sh -d ~/Dotfiles
+>> copyconfig -c ~/dotfiles/conf.json -d ~/dotfiles
  
-"tmuxrc" --> /home/dennisfarmer/.config/tmux/tmuxrc
-"vimrc" --> /home/dennisfarmer/.vim/vimrc
-"zshenv" --> /home/dennisfarmer/.config/zsh/.zshenv
-"zshrc" --> /home/dennisfarmer/.config/zsh/.zshrc
+Backed up: /home/user/.condarc
+       to: /home/user/dotfiles/condarc
+Backed up: /home/user/.config/zsh/.zshrc
+       to: /home/user/dotfiles/zshrc
+       ...
+       ...
 ```
 
 ### Manual Guide:
@@ -36,14 +38,14 @@ chmod u+x copyconfig/copyconfig.sh
 
 ```
 Usage:
-  copyconfig [-c FILE] [-d DIRECTORY] [-r]
+  copyconfig [-c FILE] [-d DIRECTORY] [-r -i]
 
-Copies Unix configuration files as specified by copyconfig.json
+Backs up Unix configuration files as specified by copyconfig.json
 
 ARGUMENTS-----------------------------------------------
   -h, --help               Display this message
-                          
-  -c, --config <file>      Change path to copyconfigrc
+
+  -c, --config <file>      Change path to config file
                            (default='./copyconfig.json')
 
   -d, --dotfile <folder>   Specify directory that dotfiles
@@ -51,6 +53,11 @@ ARGUMENTS-----------------------------------------------
 
   -r, --remove             Optional flag that removes
                            previously copied dotfiles
+
+  -i, --install            Instead of copying from the
+                           system to dotfile directory,
+                           copy contents of dotfile directory
+                           to respective system folders     
 
 COPYCONFIG.JSON-FORMAT----------------------------------
 _____________________________________
@@ -69,5 +76,5 @@ example) in ~/.bashrc or with any other similar method:
    export ZDOTDIR="$HOME/.config/zsh"
 
 >> source ~/env
- 
+
 ```
