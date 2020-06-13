@@ -6,10 +6,11 @@ from moviepy.editor import VideoFileClip, concatenate_videoclips
 import wget
 import re
 import os
+import shutil
 
 def clean_str(x):
     if not isinstance(x, str):
-        raise TypeError("expected str instance, {} found".format(type(x))
+        raise TypeError("expected str instance, {} found".format(type(x)))
     return x.replace(" ", "_").replace("'", "").replace(chr(416),"").lower()
 
 
@@ -22,10 +23,6 @@ unit_names = {i.split(":_", 1)[0]: i.split(":_", 1)[1].replace(":","") for i in 
 # for unit in unit_names:
     # url = "https://www.webassign.net/resources/larcalcet7/menus/larcalcet7_menu_{}.html".format(unit)
 
-try:
-    os.mkdir("./tmp")
-except FileExistsError:
-    pass
 
 try:
     os.mkdir("./mp4_files")
@@ -35,6 +32,12 @@ except FileExistsError:
 
 for unit in ["1_1"]:
     files_to_concat = []
+
+    try:
+        os.mkdir("./tmp")
+    except FileExistsError:
+        pass
+
     url = "https://www.webassign.net/resources/larcalcet7/menus/larcalcet7_menu_{}.html".format(unit)
 
     f = open("larcalcet7_menu_1_1.html")
@@ -54,7 +57,11 @@ for unit in ["1_1"]:
     final_filename = "".join(["./mp4_files/", unit, "_etf_", unit_names[unit], ".mp4"])
     final_mp4_clip.write_videofile(final_filename)
     print(final_filename)
-
+    try:
+        shutil.rmtree("./tmp")
+    except OSError:
+        for f in os.listdir("./tmp"):
+            os.remove("".join(["./tmp/", f]))
     f.close()
 
 # https://www.webassign.net/resources/larcalcet7/larcalcet7_lectures_1_1.html
