@@ -46,7 +46,7 @@ for unit in unit_names:
         
         print(" Unit: ", unit, "\t\tFilename: ", source_filename+".mp4",sep="")
         
-# This script was used to make sure regex patterns and urls are working properly before the actual
+# This script is used to make sure regex patterns and urls are working properly before the actual
 # webscraping / mp4_download script is used.
 #
 #
