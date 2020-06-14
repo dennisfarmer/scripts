@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-powerpoint_regex="LarCalcETF7e_\([0-9]\{2\}\)_[0-9]\{2\}\.pptx"
 mp4_regex="\([0-9]\{1,2\}\)_[0-9]\{1,2\}_etf_.*\.mp4"
+powerpoint_regex="LarCalcETF7e_\([0-9]\{2\}\)_[0-9]\{2\}\.ppt"
 
 # make dirs:
 while read line; do
-	line_number=$(printf "%02d" $(echo $line | sed "s/[^[0-9]]*//g"))
+	line_number=$(printf "%02d" $(echo $line | sed "s/[^[0-9]]*//g; s/^0*//") )
 	line=$(echo $line | sed "s/[0-9]*/$line_number/; s/\://g; s/\s/_/g; s/\,//g" | tr [:upper:] [:lower:]) 
 	mkdir $line 2>/dev/null && echo "Creating: \"$line\"..."
 done <$1
@@ -28,10 +28,10 @@ function moveFiles () {
 	# $2 = reg_expr (to parse filename for unit number)
 
 	for file in ./*$1; do
-		unit_number=$(printf "%02d" $(echo ${file#./} | sed "s/$2/\1/"))
+		unit_number=$(printf "%02d" $(echo ${file#./} | sed "s/$2/\1/; s/^0*//") )
 		mv $file $(findDir $unit_number)*
 	done
 }
  
-moveFiles ".pptx" $powerpoint_regex
 moveFiles ".mp4" $mp4_regex
+moveFiles ".ppt" $powerpoint_regex
