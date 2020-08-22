@@ -15,7 +15,7 @@ svn checkout https://github.com/dennisfarmer/scripts/trunk/latex_autocompile_vim
 
 chmod u+x $SCRIPTS/latex_autocompile_vim/latex_script.sh
 
-echo '" LaTeX Autocompile Hotkey:\nautocmd FileType tex,latex,plaintex nnoremap <buffer> <Leader>p :w <bar> sh $SCRIPTS/latex_autocompile_vim/latex_script.sh % & disown <CR><CR>' >> $VIMRC
+echo '" LaTeX Autocompile Hotkey:\nautocmd FileType xtx,tex,latex,plaintex nnoremap <buffer> <Leader>p :w <bar> sh $SCRIPTS/latex_autocompile_vim/latex_script.sh % & disown <CR><CR>' >> $VIMRC
 ```
 
 ### Usage:
