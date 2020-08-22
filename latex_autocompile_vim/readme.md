@@ -5,7 +5,7 @@
 This script allows you to automatically compile and preview LaTeX documents without leaving vim. The PDF viewer used is set by the `$PDFVIEWER` global variable (A viewer with auto-update upon save, like okular, is recommended)
 
 ### Requirements:
-`svn, xetex (or pdflatex/luatex), okular (or equivalent)`
+`svn, xelatex (or pdflatex/lualatex), okular (or equivalent)`
 
 ### Installation:
 _In the following lines, replace `$SCRIPTS` with your desired scripts directory, and `$VIMRC` with the location of your vimrc._
