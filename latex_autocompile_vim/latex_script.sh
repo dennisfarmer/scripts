@@ -10,7 +10,7 @@ file_isopen=`ps -fe | grep "$PDFVIEWER $(echo $file).pdf" | grep -vc grep` #=0 i
 
 #cd $file_directory
 
-xelatex $1 >/dev/null 2>&1 &
+xetex $1 >/dev/null 2>&1 &
 
 if [ $file_isopen -eq 0 ]; then
 	$PDFVIEWER $file".pdf" >/dev/null 2>&1
