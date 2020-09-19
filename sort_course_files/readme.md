@@ -2,7 +2,7 @@
 
 [![LICENSE](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/dennisfarmer/scripts/master/LICENSE)
 
-If you are a student who likes to keep their school files organized in folders sorted by chapter name, then this script is for you! With a little regular expression knowlege and a .txt file of chapter numbers and names, `sort_course_files.sh` is able to create directories and sort files into them based on extracted chapter numbers.
+If you are a student who likes to keep their school files organized in folders sorted by chapter name, then this script is for you! With a little regular expression knowledge and a .txt file of chapter numbers and names, `sort_course_files.sh` is able to create directories and sort files into them based on extracted chapter numbers.
 
 ### Installation:
 ```zsh
