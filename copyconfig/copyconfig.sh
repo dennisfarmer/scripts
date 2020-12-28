@@ -62,23 +62,27 @@ while test $# -gt 0; do
                      ;;
                  -r|--remove)
                      shift
-	             read -p "Are you sure you wish to REMOVE files from system directories? [y|n] " -n 1 -r
+	                read -p "Are you sure you wish to REMOVE files from system directories? [y|n] " -n 1 -r
                      if [[ $REPLY =~ ^[Yy]$ ]]
-	             then
-	             echo "";echo ""
-                     remove="TRUE"
-		     fi
+                     then
+                         echo "";echo ""
+                         remove="TRUE"
+                     fi
                      ;;
                  -i|--install)
-		     shift
-	             echo "Are you sure you wish to INSTALL files to system directories?"
-	             read -p "This will OVERWRITE existing configuration files! [y|n] " -n 1 -r
-                     if [[ $REPLY =~ ^[Yy]$ ]]
-	             then
-	             echo ""; echo ""
-		     installing="TRUE"
-		     fi
-		     ;;
+                    shift
+                    echo "Are you sure you wish to INSTALL files to system directories?"
+                    read -p "This will OVERWRITE existing configuration files! [y|n] " -n 1 -r
+                    if [[ $REPLY =~ ^[Yy]$ ]]
+                    then
+                        echo ""; echo ""
+                        installing="TRUE"
+                    fi
+                    ;;
+                --script)
+                    shift
+                    installing="TRUE"
+                    ;;
                  *)
                     echo "copyconfig: invalid option -- '$1'"
                     echo "Try 'copyconfig --help' for more information"
