@@ -114,6 +114,8 @@ for key in $(jq 'keys | .[]' $config_dir); do
 	    cp -r "$dotfile_dir/$key" $filepath && {
 		    echo "Installed: $key"
 		    echo "       to: $filepath"
+            } || {
+            echo "    Error: Must manually install $key -> $filepath"
             }
 	else
 	    if [ -d "$filepath" ]
