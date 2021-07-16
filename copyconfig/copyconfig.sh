@@ -108,28 +108,37 @@ for key in $(jq 'keys | .[]' $config_dir); do
     else
 	if [ $installing ]
 	then
-	    file_dir=$(echo $filepath | rev | cut -d/ -f2- | rev) 
-	    [[ ! -d $file_dir ]] && mkdir -p $file_dir
-             
-	    cp -r "$dotfile_dir/$key" $filepath && {
-		    echo "Installed: $key"
-		    echo "       to: $filepath"
+	    filedir=$(echo $filepath | rev | cut -d/ -f2- | rev) 
+	    if [ ! -d $filedir ]
+        then
+            mkdir -p $filedir
+            cp -r "$dotfile_dir/$key" $filepath && {
+                echo "Installed: $key/\*"
+                echo "       to: $filedir/"
             } || {
-            echo "    Error: Must manually install $key -> $filepath"
+                echo "    Error: Must manually install $key/\* -> $filepath"
             }
+        else
+            cp -r "$dotfile_dir/$key" $filepath && {
+                echo "Installed: $key"
+                echo "       to: $filepath"
+            } || {
+                echo "    Error: Must manually install $key -> $filepath"
+            }
+        fi
 	else
 	    if [ -d "$filepath" ]
-	    then
-		[[ ! -d "$dotfile_dir/$key" ]] && mkdir -p "$dotfile_dir/$key"
+        then
+            [[ ! -d "$dotfile_dir/$key" ]] && mkdir -p "$dotfile_dir/$key"
 	        cp -r $filepath/* $dotfile_dir/$key && {
 			echo "Backed up: $filepath"
 			echo "       to: $dotfile_dir/$key"
 	        }
 	    else 
-		cp -r "$filepath" "$dotfile_dir/$key" && {
-			echo "Backed up: $filepath"
-			echo "       to: $dotfile_dir/$key"
-                }
+            cp -r "$filepath" "$dotfile_dir/$key" && {
+                echo "Backed up: $filepath"
+                echo "       to: $dotfile_dir/$key"
+            }
 	    fi
 
 	fi
