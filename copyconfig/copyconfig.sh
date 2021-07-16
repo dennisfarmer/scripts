@@ -108,15 +108,15 @@ for key in $(jq 'keys | .[]' $config_dir); do
     else
 	if [ $installing ]
 	then
-	    filedir=$(echo $filepath | rev | cut -d/ -f2- | rev) 
-	    if [ ! -d $filedir ]
+	    parent_dir=$(echo $filepath | rev | cut -d/ -f2- | rev) 
+	    [[ ! -d $parent_dir ]] && mkdir -p $parent_dir
+        if [ -d $dotfile_dir/$key ]
         then
-            mkdir -p $filedir
-            cp -r "$dotfile_dir/$key" $filepath && {
-                echo "Installed: $key/\*"
-                echo "       to: $filedir/"
+            cp -r $dotfile_dir/$key/* $filepath && {
+                echo "Installed: $key/*"
+                echo "       to: $filepath/"
             } || {
-                echo "    Error: Must manually install $key/\* -> $filepath"
+                echo "    Error: Must manually install $key/* -> $filepath"
             }
         else
             cp -r "$dotfile_dir/$key" $filepath && {
